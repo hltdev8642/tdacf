@@ -1,0 +1,6 @@
+name = Aircraft Framework
+author = GitHub Copilot
+description = Reusable aircraft vehicle framework with multiple parts support. Configure main.xml for vehicle structure and options.lua for parameters.
+version = 1.0
+tags = Vehicle, Aircraft
+type = Vehicle

@@ -1,0 +1,22 @@
+<vehicle name="Aircraft">
+    <!-- Main fuselage -->
+    <body>
+        <voxbox pos="0 0 0" size="1 1 1" file="MOD/vox/fuselage.vox"/>
+    </body>
+    <!-- Left wing -->
+    <body>
+        <voxbox pos="-2 0 0" size="1 1 1" file="MOD/vox/wing.vox"/>
+    </body>
+    <!-- Right wing -->
+    <body>
+        <voxbox pos="2 0 0" size="1 1 1" file="MOD/vox/wing.vox"/>
+    </body>
+    <!-- Tail -->
+    <body>
+        <voxbox pos="0 0 -2" size="1 1 1" file="MOD/vox/tail.vox"/>
+    </body>
+    <!-- Joints to connect parts -->
+    <joint type="hinge" pos="-2 0 0" axis="0 0 1" body1="1" body2="2" />
+    <joint type="hinge" pos="2 0 0" axis="0 0 1" body1="1" body2="3" />
+    <joint type="hinge" pos="0 0 -2" axis="0 1 0" body1="1" body2="4" />
+</vehicle>
