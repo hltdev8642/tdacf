@@ -1,6 +1,6 @@
 name = Aircraft Framework
 author = GitHub Copilot
-description = Reusable enterable aircraft vehicle framework with controllable components (ailerons, elevators, vertical stabilizer, rudder, landing gear) and cockpit. Configure main.xml for vehicle structure and options.lua for parameters.
+description = Reusable enterable aircraft vehicle framework with controllable components (ailerons, elevators, vertical stabilizer, rudder, landing gear) and cockpit. Configure config.lua for aircraft-specific settings and main.xml for vehicle structure.
 version = 1.0
 tags = Vehicle, Aircraft, Enterable
 type = Vehicle

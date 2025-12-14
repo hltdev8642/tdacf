@@ -1,42 +1,31 @@
 -- Aircraft Framework Mod for Teardown
 -- This is a reusable framework for creating enterable aircraft vehicles with multiple controllable components.
 -- To adapt for different aircraft:
--- 1. Modify main.xml to define the vehicle structure with bodies and joints
--- 2. Update vox paths in main.xml
+-- 1. Modify config.lua to point to your XML and define component indices
+-- 2. Update main.xml to define the vehicle structure with bodies and joints
 -- 3. Adjust options in options.lua
 -- 4. Create your vox models with appropriate collision shapes
 
-local aircraftXml = "MOD/main.xml"  -- Path to the vehicle XML
+local config = require("config")
+
 local aircraftBodies = {}  -- Table to hold spawned bodies
-local mainBodyIndex = 1  -- Index of the main body (fuselage)
-local componentIndices = {
-    leftAileron = 2,
-    rightAileron = 3,
-    elevator = 4,
-    verticalStabilizer = 5,
-    rudder = 6,
-    leftGear = 7,
-    rightGear = 8,
-    noseGear = 9
-}
 
 function init()
     -- Spawn the aircraft at startup
     aircraftBodies = {}
-    local spawnPos = Vec(0, 10, 0)  -- Fixed spawn position, adjust as needed
-    local spawned = Spawn(aircraftXml, Transform(spawnPos, QuatEuler(0, 0, 0)))
+    local spawned = Spawn(config.xmlPath, Transform(config.spawnPos, QuatEuler(0, 0, 0)))
     for i, body in ipairs(spawned) do
         if IsBody(body) then
             table.insert(aircraftBodies, body)
         end
     end
     if #aircraftBodies > 0 then
-        SetTag(aircraftBodies[mainBodyIndex], "aircraft_main")
+        SetTag(aircraftBodies[config.components.fuselage], "aircraft_main")
     end
 end
 
 function tick(dt)
-    if #aircraftBodies > 0 and IsBodyValid(aircraftBodies[mainBodyIndex]) then
+    if #aircraftBodies > 0 and IsBodyValid(aircraftBodies[config.components.fuselage]) then
         -- Get options
         local thrustPower = GetInt("thrust")
         local liftPower = GetInt("lift")
@@ -50,7 +39,7 @@ function tick(dt)
         local pitch = up - (InputDown("c") and 1 or 0)  -- Space for up, C for down
         
         -- Apply forces to main body
-        local body = aircraftBodies[mainBodyIndex]
+        local body = aircraftBodies[config.components.fuselage]
         local bodyTransform = GetBodyTransform(body)
         local forwardDir = bodyTransform.rot * Vec(0, 0, 1)
         local upDir = Vec(0, 1, 0)
@@ -62,25 +51,25 @@ function tick(dt)
         
         -- Control surfaces
         -- Ailerons for roll
-        if aircraftBodies[componentIndices.leftAileron] then
-            local aileronRot = QuatEuler(0, 0, -roll * 30)  -- Deflect up to 30 degrees
-            SetBodyTransform(aircraftBodies[componentIndices.leftAileron], Transform(Vec(-2, 0, 0), aileronRot))
+        if aircraftBodies[config.components.leftAileron] then
+            local aileronRot = QuatEuler(0, 0, -roll * config.maxDeflection.aileron)  -- Deflect up to maxDeflection degrees
+            SetBodyTransform(aircraftBodies[config.components.leftAileron], Transform(Vec(-2, 0, 0), aileronRot))
         end
-        if aircraftBodies[componentIndices.rightAileron] then
-            local aileronRot = QuatEuler(0, 0, roll * 30)
-            SetBodyTransform(aircraftBodies[componentIndices.rightAileron], Transform(Vec(2, 0, 0), aileronRot))
+        if aircraftBodies[config.components.rightAileron] then
+            local aileronRot = QuatEuler(0, 0, roll * config.maxDeflection.aileron)
+            SetBodyTransform(aircraftBodies[config.components.rightAileron], Transform(Vec(2, 0, 0), aileronRot))
         end
         
         -- Elevator for pitch
-        if aircraftBodies[componentIndices.elevator] then
-            local elevatorRot = QuatEuler(-pitch * 30, 0, 0)
-            SetBodyTransform(aircraftBodies[componentIndices.elevator], Transform(Vec(0, 0, -2), elevatorRot))
+        if aircraftBodies[config.components.elevator] then
+            local elevatorRot = QuatEuler(-pitch * config.maxDeflection.elevator, 0, 0)
+            SetBodyTransform(aircraftBodies[config.components.elevator], Transform(Vec(0, 0, -2), elevatorRot))
         end
         
         -- Rudder for yaw
-        if aircraftBodies[componentIndices.rudder] then
-            local rudderRot = QuatEuler(0, yaw * 30, 0)
-            SetBodyTransform(aircraftBodies[componentIndices.rudder], Transform(Vec(0, 1.5, -2), rudderRot))
+        if aircraftBodies[config.components.rudder] then
+            local rudderRot = QuatEuler(0, yaw * config.maxDeflection.rudder, 0)
+            SetBodyTransform(aircraftBodies[config.components.rudder], Transform(Vec(0, 1.5, -2), rudderRot))
         end
         
         -- Landing gear toggle (G key)
