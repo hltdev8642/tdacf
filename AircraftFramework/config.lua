@@ -8,7 +8,7 @@
 
 local config = {
     -- Path to the aircraft XML file
-    xmlPath = "MOD/main.xml",
+    xmlPath = "prefab/aircraft_example.xml",
     
     -- Component body indices (1-based, matching the order in XML)
     components = {
@@ -22,9 +22,6 @@ local config = {
         rightGear = 8,          -- Right landing gear
         noseGear = 9            -- Nose landing gear
     },
-    
-    -- Spawn position (can be overridden)
-    spawnPos = Vec(0, 10, 0),
     
     -- Control surface deflection angles (degrees)
     maxDeflection = {

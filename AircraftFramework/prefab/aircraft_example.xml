@@ -1,39 +1,39 @@
 <vehicle name="Aircraft">
     <!-- Main fuselage (cockpit) -->
     <body>
-        <voxbox pos="0 0 0" size="1 1 1" file="MOD/vox/fuselage.vox"/>
+        <voxbox pos="0 0 0" size="1 1 1" file="prefab/vox/fuselage.vox"/>
     </body>
     <!-- Left aileron -->
     <body>
-        <voxbox pos="-2 0 0" size="0.5 0.1 1" file="MOD/vox/aileron.vox"/>
+        <voxbox pos="-2 0 0" size="0.5 0.1 1" file="prefab/vox/aileron.vox"/>
     </body>
     <!-- Right aileron -->
     <body>
-        <voxbox pos="2 0 0" size="0.5 0.1 1" file="MOD/vox/aileron.vox"/>
+        <voxbox pos="2 0 0" size="0.5 0.1 1" file="prefab/vox/aileron.vox"/>
     </body>
     <!-- Elevator -->
     <body>
-        <voxbox pos="0 0 -2" size="1 0.1 0.5" file="MOD/vox/elevator.vox"/>
+        <voxbox pos="0 0 -2" size="1 0.1 0.5" file="prefab/vox/elevator.vox"/>
     </body>
     <!-- Vertical stabilizer -->
     <body>
-        <voxbox pos="0 0.5 -2" size="0.1 1 0.5" file="MOD/vox/vertical_stabilizer.vox"/>
+        <voxbox pos="0 0.5 -2" size="0.1 1 0.5" file="prefab/vox/vertical_stabilizer.vox"/>
     </body>
     <!-- Rudder -->
     <body>
-        <voxbox pos="0 1 -2" size="0.1 0.5 0.5" file="MOD/vox/rudder.vox"/>
+        <voxbox pos="0 1 -2" size="0.1 0.5 0.5" file="prefab/vox/rudder.vox"/>
     </body>
     <!-- Left landing gear -->
     <body>
-        <voxbox pos="-1 -1 0" size="0.2 0.5 0.2" file="MOD/vox/gear.vox"/>
+        <voxbox pos="-1 -1 0" size="0.2 0.5 0.2" file="prefab/vox/gear.vox"/>
     </body>
     <!-- Right landing gear -->
     <body>
-        <voxbox pos="1 -1 0" size="0.2 0.5 0.2" file="MOD/vox/gear.vox"/>
+        <voxbox pos="1 -1 0" size="0.2 0.5 0.2" file="prefab/vox/gear.vox"/>
     </body>
     <!-- Nose landing gear -->
     <body>
-        <voxbox pos="0 -1 1" size="0.2 0.5 0.2" file="MOD/vox/gear.vox"/>
+        <voxbox pos="0 -1 1" size="0.2 0.5 0.2" file="prefab/vox/gear.vox"/>
     </body>
     <!-- Joints to connect parts -->
     <joint type="hinge" pos="-2 0 0" axis="0 0 1" body1="1" body2="2" />

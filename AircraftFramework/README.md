@@ -1,50 +1,70 @@
 # Aircraft Framework for Teardown
 
-A reusable, extendable framework for creating enterable aircraft vehicles in Teardown with realistic flight controls and multiple controllable components.
+A comprehensive, reusable framework for creating enterable aircraft vehicles in Teardown with realistic flight physics, multiple controllable components, and extensible architecture.
 
 ## Features
 
-- **Enterable Cockpit**: Full vehicle entry with cockpit camera
-- **Realistic Flight Controls**: Thrust, lift, and control surface animation
-- **Multiple Components**: Ailerons, elevators, rudder, vertical stabilizer, landing gear
-- **Configurable Parameters**: Adjustable thrust, lift, and control sensitivity
-- **Extendable Design**: Easy to create new aircraft variants
-- **Modular Structure**: Separate configuration, templates, and logic
+- **Enterable Cockpit**: Full vehicle entry with cockpit camera and custom controls
+- **Advanced Flight Physics**: Realistic thrust, lift, drag, and control surface deflection
+- **Multiple Aircraft Components**: Ailerons, elevators, rudder, vertical stabilizer, retractable landing gear
+- **Configurable Parameters**: Adjustable flight characteristics via mod options
+- **Spawnable Item**: Available in Teardown's spawn menu for easy access
+- **Extendable Design**: Modular architecture for creating unlimited aircraft variants
+- **Template-Based**: Use `aircraft_example.xml` as a starting point for custom designs
 
 ## Installation
 
 1. Copy the `AircraftFramework` folder to `Documents/Teardown/mods/`
-2. Create the required vox models (see below)
+2. Create the required vox models in `prefab/vox/` (see below)
 3. Enable the mod in Teardown's Mod Manager
-4. Start a new game or load a level
-5. The aircraft will spawn automatically at the configured location
+4. In-game, press T to open the spawn menu
+5. Navigate to "AIRCRAFT/Aircraft Framework" and spawn it
+6. Approach the spawned aircraft and press E to enter the cockpit
 
-## Controls (When Entered)
+## Flight Controls
 
-| Control | Action |
-|---------|--------|
-| W/S | Forward/Reverse Thrust |
-| A/D | Rudder (Yaw Left/Right) |
-| Q/E | Ailerons (Roll Left/Right) |
-| Space/C | Elevators (Pitch Up/Down) |
-| G | Toggle Landing Gear |
+| Key | Action | Component |
+|-----|--------|-----------|
+| W/S | Forward/Reverse Thrust | Engine |
+| A/D | Yaw Left/Right | Rudder |
+| Q/E | Roll Left/Right | Ailerons |
+| Space/C | Pitch Up/Down | Elevator |
+| G | Toggle Landing Gear | Gear |
 
-## File Structure
+## Framework Architecture
 
-```
-AircraftFramework/
-├── info.txt           # Mod metadata
-├── main.lua           # Core framework logic
-├── config.lua         # Aircraft configuration
-├── main.xml           # Vehicle structure template
-├── options.lua        # Flight parameter settings
-├── spawn.txt          # Spawn position configuration
-└── README.md          # This documentation
+### Core Files
+- **main.lua**: Flight physics logic and component control
+- **config.lua**: Aircraft-specific configuration and component mapping
+- **options.lua**: User-adjustable flight parameters
+- **spawn.txt**: Registers the aircraft in Teardown's spawn menu
+
+### Template Files
+- **prefab/aircraft_example.xml**: Vehicle structure template with all components
+- **prefab/vox/**: Directory for aircraft 3D models
+
+### Configuration System
+The framework uses a Lua-based configuration system for maximum flexibility:
+
+```lua
+local config = {
+    xmlPath = "prefab/aircraft_example.xml",  -- Vehicle definition
+    components = {                           -- Body index mapping
+        fuselage = 1,
+        leftAileron = 2,
+        -- ... etc
+    },
+    maxDeflection = {                        -- Control limits
+        aileron = 30,   -- degrees
+        elevator = 30,
+        rudder = 30
+    }
+}
 ```
 
 ## Required Vox Models
 
-Place these models in `AircraftFramework/MOD/vox/`:
+Place these models in `AircraftFramework/prefab/vox/`:
 
 - **fuselage.vox**: Main body and cockpit
 - **aileron.vox**: Wing control surfaces
@@ -66,8 +86,7 @@ Adjust these in the mod options menu:
 
 ```lua
 local config = {
-    xmlPath = "MOD/main.xml",           -- Vehicle XML file path
-    spawnPos = Vec(0, 10, 0),          -- Spawn position
+    xmlPath = "prefab/aircraft_example.xml",           -- Vehicle XML file path
     components = {                      -- Body indices in XML
         fuselage = 1,
         leftAileron = 2,
@@ -96,8 +115,7 @@ local config = {
 
 ```lua
 local config = {
-    xmlPath = "MOD/jet.xml",
-    spawnPos = Vec(0, 15, 0),
+    xmlPath = "prefab/jet.xml",
     components = {
         -- Update indices based on your XML
         fuselage = 1,
@@ -114,7 +132,7 @@ return config
 
 ### Step 2: Create Vehicle XML
 
-1. Copy `main.xml` to `jet.xml`
+1. Copy `aircraft_example.xml` to `jet.xml`
 2. Modify the vehicle structure:
    - Update vox file paths
    - Adjust body positions and sizes
@@ -125,7 +143,7 @@ Example XML structure:
 ```xml
 <vehicle name="Jet">
     <body>
-        <voxbox pos="0 0 0" size="1 1 1" file="MOD/vox/jet_fuselage.vox"/>
+        <voxbox pos="0 0 0" size="1 1 1" file="prefab/vox/jet_fuselage.vox"/>
     </body>
     <!-- Add more bodies for components -->
     <joint type="hinge" pos="..." axis="..." body1="1" body2="2" />
@@ -138,7 +156,7 @@ Example XML structure:
 Design your aircraft parts in MagicaVoxel:
 - Use appropriate scales and collision shapes
 - Ensure cockpit area is clear for the player
-- Export as .vox files to the MOD/vox/ directory
+- Export as .vox files to the prefab/vox/ directory
 
 ### Step 4: Update Main Script
 
@@ -182,9 +200,10 @@ AddBodyForce(body, direction * power * input)
 ## Troubleshooting
 
 ### Aircraft Won't Spawn
-- Check that all vox files exist in MOD/vox/
-- Verify XML file paths are correct
-- Ensure config.lua points to valid XML
+- Check that the mod is enabled in Mod Manager
+- Open spawn menu (T key) and look for "AIRCRAFT/Aircraft Framework"
+- Ensure spawn.txt is correctly formatted
+- Verify XML file exists at prefab/aircraft_example.xml
 
 ### No Flight Controls
 - Make sure you're inside the cockpit (press E near aircraft)
@@ -207,7 +226,6 @@ AddBodyForce(body, direction * power * input)
 
 ### Configuration Options
 - `config.xmlPath`: Path to vehicle XML file
-- `config.spawnPos`: Initial spawn position
 - `config.components`: Body index mappings
 - `config.maxDeflection`: Control surface limits
 

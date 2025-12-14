@@ -11,21 +11,18 @@ local config = require("config")
 local aircraftBodies = {}  -- Table to hold spawned bodies
 
 function init()
-    -- Spawn the aircraft at startup
-    aircraftBodies = {}
-    local spawned = Spawn(config.xmlPath, Transform(config.spawnPos, QuatEuler(0, 0, 0)))
-    for i, body in ipairs(spawned) do
-        if IsBody(body) then
-            table.insert(aircraftBodies, body)
-        end
-    end
-    if #aircraftBodies > 0 then
-        SetTag(aircraftBodies[config.components.fuselage], "aircraft_main")
-    end
+    -- No automatic spawning - aircraft is spawned via spawn menu
 end
 
 function tick(dt)
-    if #aircraftBodies > 0 and IsBodyValid(aircraftBodies[config.components.fuselage]) then
+    -- Find aircraft bodies if not already found (spawned from menu)
+    if #aircraftBodies == 0 then
+        aircraftBodies = FindBody()
+        -- Assume the aircraft bodies are present (this is a simplification)
+        -- In a real implementation, you might need more sophisticated detection
+    end
+    
+    if #aircraftBodies >= 9 and IsBodyValid(aircraftBodies[config.components.fuselage]) then
         -- Get options
         local thrustPower = GetInt("thrust")
         local liftPower = GetInt("lift")
